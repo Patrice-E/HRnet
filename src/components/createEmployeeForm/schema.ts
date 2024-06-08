@@ -7,7 +7,7 @@ const schema = z.object({
   startDate: z.date(),
   street: z.string().min(1, { message: 'Street is required' }),
   city: z.string().min(1, { message: 'City is required' }),
-  state: z.string(),
+  state: z.string().min(1, { message: 'State is required' }),
   zipCode: z.number({ message: 'ZipCode is required' }),
   department: z.string().min(1, { message: 'Department is required' }),
 });
@@ -26,5 +26,5 @@ const defaultValues: Schema = {
   department: 'Sales',
 };
 
-export { schema, defaultValues };
+export { defaultValues, schema };
 export type { Schema };

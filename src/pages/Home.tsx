@@ -4,10 +4,10 @@ export default function Home() {
   return (
     <section>
       <button type='button'>
-        <Link to='/create-employee'>View Current Employees</Link>
+        <Link to='/create-employee'>Create New Employee</Link>
       </button>
       <button type='button'>
-        <Link to='/employees-list'>Create New Employee</Link>
+        <Link to='/employees-list'>View Current Employees</Link>
       </button>
     </section>
   );

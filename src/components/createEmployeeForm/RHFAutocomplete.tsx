@@ -32,26 +32,25 @@ export default function RHFAutocomplete<T extends FieldValues>({
             option.name === newValue.name
           }
           onChange={(_, newValue) => {
-            console.log(
-              newValue === null
-                ? options[0].abbreviation
-                : newValue.abbreviation
-            );
             onChange(
               newValue === null
                 ? options[0].abbreviation
                 : newValue.abbreviation
             );
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              inputRef={ref}
-              error={!!error}
-              helperText={error?.message}
-              label={label}
-            />
-          )}
+          renderInput={(params) => {
+            console.log('error', error);
+            console.log('value', value);
+            return (
+              <TextField
+                {...params}
+                inputRef={ref}
+                error={!!error}
+                helperText={error?.message}
+                label={label}
+              />
+            );
+          }}
         />
       )}
     />

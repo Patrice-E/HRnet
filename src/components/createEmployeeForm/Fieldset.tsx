@@ -28,11 +28,7 @@ export default function Fieldset() {
           error={!!errors.city}
           helperText={errors.city?.message}
         />
-        <RHFAutocomplete<Schema>
-          name='department'
-          options={states}
-          label='Department'
-        />
+        <RHFAutocomplete<Schema> name='state' options={states} label='State' />
         <TextField
           {...register('zipCode')}
           label='ZipCode'

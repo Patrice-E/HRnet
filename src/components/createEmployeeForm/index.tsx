@@ -8,14 +8,21 @@ import RHFAutocomplete from './RHFAutocomplete';
 import RHFDatePicker from './RHFDatePicker';
 import RHFTextField from './RHFTextField';
 import { Schema } from './schema';
+import { useAppStore } from '../../store';
 
 export default function CreateEmployeeForm() {
   const {
+    handleSubmit,
     formState: { isSubmitting },
   } = useFormContext<Schema>();
+  const { addUser } = useAppStore();
+
+  const onSubmit = (data: Schema) => {
+    addUser(data);
+  };
 
   return (
-    <Container maxWidth='sm' component='form'>
+    <Container maxWidth='sm' component='form' onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={1}>
         <RHFTextField name='firstName' label='First Name' />
         <RHFTextField name='lastName' label='Last name' />
@@ -28,6 +35,7 @@ export default function CreateEmployeeForm() {
           label='Department'
         />
         <LoadingButton
+          type='submit'
           variant='contained'
           loading={isSubmitting}
           startIcon={<SaveIcon />}

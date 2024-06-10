@@ -7,8 +7,18 @@ const schema = z.object({
   startDate: z.date(),
   street: z.string().min(1, { message: 'Street is required' }),
   city: z.string().min(1, { message: 'City is required' }),
-  state: z.string().min(1, { message: 'State is required' }),
-  zipCode: z.number({ message: 'ZipCode is required' }),
+  state: z
+    .string({
+      required_error: 'State is required',
+      invalid_type_error: 'State must be a number',
+    })
+    .min(1, { message: 'State is required' }),
+  zipCode: z.coerce
+    .number({
+      required_error: 'ZipCode is required',
+      invalid_type_error: 'ZipCode must be a number',
+    })
+    .gt(0, { message: 'ZipCode is invalid' }),
   department: z.string().min(1, { message: 'Department is required' }),
 });
 
@@ -21,7 +31,7 @@ const defaultValues: Schema = {
   startDate: new Date(),
   street: '',
   city: '',
-  state: '',
+  state: 'Alabama',
   zipCode: 0,
   department: 'Sales',
 };

@@ -31,6 +31,7 @@ export default function Fieldset() {
         <RHFAutocomplete<Schema> name='state' options={states} label='State' />
         <TextField
           {...register('zipCode')}
+          type='number'
           label='ZipCode'
           size='small'
           error={!!errors.zipCode}

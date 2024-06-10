@@ -39,8 +39,6 @@ export default function RHFAutocomplete<T extends FieldValues>({
             );
           }}
           renderInput={(params) => {
-            console.log('error', error);
-            console.log('value', value);
             return (
               <TextField
                 {...params}

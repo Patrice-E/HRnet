@@ -9,8 +9,10 @@ import RHFDatePicker from './RHFDatePicker';
 import RHFTextField from './RHFTextField';
 import { Schema } from './schema';
 import { useAppStore } from '../../store';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateEmployeeForm() {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -19,6 +21,7 @@ export default function CreateEmployeeForm() {
 
   const onSubmit = (data: Schema) => {
     addUser(data);
+    navigate('/employees-list');
   };
 
   return (

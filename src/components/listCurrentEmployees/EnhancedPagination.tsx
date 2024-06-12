@@ -1,23 +1,25 @@
 import { TablePagination } from '@mui/material';
-import { useState } from 'react';
 import { useAppStore } from '../../store';
 
-export default function EnhancedPagination() {
+type Props = {
+  page: number;
+  rowsPerPage: number;
+  handleChangePage: (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
+  handleChangeRowsPerPage: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+};
+
+export default function EnhancedPagination({
+  page,
+  rowsPerPage,
+  handleChangePage,
+  handleChangeRowsPerPage,
+}: Props) {
   const { users } = useAppStore();
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   return (
     <TablePagination

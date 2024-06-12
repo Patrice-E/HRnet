@@ -2,17 +2,27 @@ import { TableBody, TableCell, TableRow } from '@mui/material';
 import { useAppStore } from '../../store';
 import { format } from 'date-fns';
 
-export default function EnhancedTableBody() {
+type Props = {
+  page: number;
+  rowsPerPage: number;
+};
+
+export default function EnhancedTableBody({ page, rowsPerPage }: Props) {
   const { users } = useAppStore();
 
   return (
     <TableBody>
-      {!users ? (
+      {!users.length ? (
         <TableRow>
-          <TableCell colSpan={9}>No data available in table</TableCell>
+          <TableCell colSpan={9} align='center'>
+            No data available in table
+          </TableCell>
         </TableRow>
       ) : (
-        users.map((user, index) => {
+        (rowsPerPage > 0
+          ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          : users
+        ).map((user, index) => {
           return (
             <TableRow key={index}>
               <TableCell>{user.firstName}</TableCell>

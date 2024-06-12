@@ -32,11 +32,7 @@ export default function RHFAutocomplete<T extends FieldValues>({
             option.name === newValue.name
           }
           onChange={(_, newValue) => {
-            onChange(
-              newValue === null
-                ? options[0].abbreviation
-                : newValue.abbreviation
-            );
+            onChange(newValue === null ? options[0].name : newValue.name);
           }}
           renderInput={(params) => {
             return (

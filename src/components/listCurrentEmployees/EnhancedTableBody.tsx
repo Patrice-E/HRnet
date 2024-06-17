@@ -1,18 +1,23 @@
 import { TableBody, TableCell, TableRow } from '@mui/material';
-import { useAppStore } from '../../store';
 import { format } from 'date-fns';
+import { useFilteredUsers } from '../../hooks/useFilteredUsers';
 
 type Props = {
   page: number;
   rowsPerPage: number;
+  filter: string;
 };
 
-export default function EnhancedTableBody({ page, rowsPerPage }: Props) {
-  const { users } = useAppStore();
+export default function EnhancedTableBody({
+  page,
+  rowsPerPage,
+  filter,
+}: Props) {
+  const filteredUsers = useFilteredUsers(filter);
 
   return (
     <TableBody>
-      {!users.length ? (
+      {!filteredUsers.length ? (
         <TableRow>
           <TableCell colSpan={9} align='center'>
             No data available in table
@@ -20,8 +25,11 @@ export default function EnhancedTableBody({ page, rowsPerPage }: Props) {
         </TableRow>
       ) : (
         (rowsPerPage > 0
-          ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          : users
+          ? filteredUsers.slice(
+              page * rowsPerPage,
+              page * rowsPerPage + rowsPerPage
+            )
+          : filteredUsers
         ).map((user, index) => {
           return (
             <TableRow key={index}>

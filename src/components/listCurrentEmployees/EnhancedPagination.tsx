@@ -1,5 +1,5 @@
 import { TablePagination } from '@mui/material';
-import { useAppStore } from '../../store';
+import { useFilteredUsers } from '../../hooks/useFilteredUsers';
 
 type Props = {
   page: number;
@@ -11,6 +11,7 @@ type Props = {
   handleChangeRowsPerPage: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  filter: string;
 };
 
 export default function EnhancedPagination({
@@ -18,13 +19,14 @@ export default function EnhancedPagination({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  filter,
 }: Props) {
-  const { users } = useAppStore();
+  const filteredUsers = useFilteredUsers(filter);
 
   return (
     <TablePagination
       component='div'
-      count={users.length}
+      count={filteredUsers.length}
       rowsPerPage={rowsPerPage}
       rowsPerPageOptions={[5, 10, 25]}
       page={page}

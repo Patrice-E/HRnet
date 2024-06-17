@@ -2,14 +2,16 @@ import { Box, Paper, Table, TableContainer } from '@mui/material';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody';
 import EnhancedPagination from './EnhancedPagination';
-import { useAppStore } from '../../store';
 import { useState } from 'react';
+import SearchBar from './SearchBar';
+import { useFilteredUsers } from '../../hooks/useFilteredUsers';
 
 export default function ListCurrentEmployees() {
-  const { users } = useAppStore();
-
+  const [filter, setFilter] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const filteredUsers = useFilteredUsers(filter);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   // const emptyRows =
@@ -30,23 +32,31 @@ export default function ListCurrentEmployees() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
-          <Table>
-            <EnhancedTableHead />
-            <EnhancedTableBody page={page} rowsPerPage={rowsPerPage} />
-          </Table>
-        </TableContainer>
-        {users.length > 0 && (
-          <EnhancedPagination
-            page={page}
-            rowsPerPage={rowsPerPage}
-            handleChangePage={handleChangePage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        )}
-      </Paper>
-    </Box>
+    <>
+      <SearchBar filter={filter} setFilter={setFilter} />
+      <Box sx={{ width: '100%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
+          <TableContainer>
+            <Table>
+              <EnhancedTableHead />
+              <EnhancedTableBody
+                page={page}
+                rowsPerPage={rowsPerPage}
+                filter={filter}
+              />
+            </Table>
+          </TableContainer>
+          {filteredUsers.length > 0 && (
+            <EnhancedPagination
+              page={page}
+              rowsPerPage={rowsPerPage}
+              handleChangePage={handleChangePage}
+              handleChangeRowsPerPage={handleChangeRowsPerPage}
+              filter={filter}
+            />
+          )}
+        </Paper>
+      </Box>
+    </>
   );
 }

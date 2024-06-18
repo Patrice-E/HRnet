@@ -1,18 +1,34 @@
-import { TableCell, TableHead, TableRow } from '@mui/material';
+import { TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { MouseEvent } from 'react';
+import { headCells } from '../../constants/headCells';
 
-export default function EnhancedTableHead() {
+type Props = {
+  order: 'asc' | 'desc';
+  orderBy: string;
+  onRequestSort: (event: MouseEvent, property: keyof typeof headCells) => void;
+};
+
+export default function EnhancedTableHead({
+  order,
+  orderBy,
+  onRequestSort,
+}: Props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell>First Name</TableCell>
-        <TableCell>Last Name</TableCell>
-        <TableCell>Start Date</TableCell>
-        <TableCell>Department</TableCell>
-        <TableCell>Date of Birth</TableCell>
-        <TableCell>Street</TableCell>
-        <TableCell>City</TableCell>
-        <TableCell>State</TableCell>
-        <TableCell>Zip Code</TableCell>
+        {Object.keys(headCells).map((key) => (
+          <TableCell key={key} sortDirection={orderBy === key ? order : false}>
+            <TableSortLabel
+              active={orderBy === key}
+              direction={order}
+              onClick={(event) =>
+                onRequestSort(event, key as keyof typeof headCells)
+              }
+            >
+              {headCells[key as keyof typeof headCells]}
+            </TableSortLabel>
+          </TableCell>
+        ))}
       </TableRow>
     </TableHead>
   );

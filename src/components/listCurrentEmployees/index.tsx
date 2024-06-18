@@ -2,15 +2,27 @@ import { Box, Paper, Table, TableContainer } from '@mui/material';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody';
 import EnhancedPagination from './EnhancedPagination';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import SearchBar from './SearchBar';
 import { useFilteredUsers } from '../../hooks/useFilteredUsers';
+import { headCells } from '../../constants/headCells';
 
 export default function ListCurrentEmployees() {
-  const [filter, setFilter] = useState('');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [orderBy, setOrderBy] = useState('firstName');
+  const handleRequestSort = (
+    _event: MouseEvent,
+    property: keyof typeof headCells
+  ) => {
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setOrderBy(property);
+  };
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [filter, setFilter] = useState('');
   const filteredUsers = useFilteredUsers(filter);
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -38,7 +50,11 @@ export default function ListCurrentEmployees() {
         <Paper sx={{ width: '100%', mb: 2 }}>
           <TableContainer>
             <Table>
-              <EnhancedTableHead />
+              <EnhancedTableHead
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+              />
               <EnhancedTableBody
                 page={page}
                 rowsPerPage={rowsPerPage}

@@ -4,6 +4,7 @@ import CreateEmployee from './pages/CreateEmployee';
 import CurrentEmployees from './pages/CurrentEmployees';
 import Error404 from './pages/Error404';
 import Home from './pages/Home';
+import { useLayoutEffect } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -36,5 +37,8 @@ const router = createBrowserRouter([
 ]);
 
 export default function Router() {
+  useLayoutEffect(() => {
+    import('./styles/css/index.css');
+  }, []);
   return <RouterProvider router={router} />;
 }

@@ -59,6 +59,8 @@ export default function ListCurrentEmployees() {
                 page={page}
                 rowsPerPage={rowsPerPage}
                 filter={filter}
+                order={order}
+                orderBy={orderBy}
               />
             </Table>
           </TableContainer>

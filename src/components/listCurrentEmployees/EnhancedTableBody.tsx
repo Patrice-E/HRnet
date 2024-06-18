@@ -2,22 +2,50 @@ import { TableBody, TableCell, TableRow } from '@mui/material';
 import { format } from 'date-fns';
 import { useFilteredUsers } from '../../hooks/useFilteredUsers';
 
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return 1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return -1;
+  }
+  return 0;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getComparator<Key extends keyof any>(
+  order: 'asc' | 'desc',
+  orderBy: Key
+): (
+  a: { [key in Key]: number | string | Date },
+  b: { [key in Key]: number | string | Date }
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
 type Props = {
   page: number;
   rowsPerPage: number;
   filter: string;
+  order: 'asc' | 'desc';
+  orderBy: string;
 };
 
 export default function EnhancedTableBody({
   page,
   rowsPerPage,
   filter,
+  order,
+  orderBy,
 }: Props) {
   const filteredUsers = useFilteredUsers(filter);
+  const sortedUsers = filteredUsers.sort(getComparator(order, orderBy));
 
   return (
     <TableBody>
-      {!filteredUsers.length ? (
+      {!sortedUsers.length ? (
         <TableRow>
           <TableCell colSpan={9} align='center'>
             No data available in table
@@ -25,11 +53,11 @@ export default function EnhancedTableBody({
         </TableRow>
       ) : (
         (rowsPerPage > 0
-          ? filteredUsers.slice(
+          ? sortedUsers.slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )
-          : filteredUsers
+          : sortedUsers
         ).map((user, index) => {
           return (
             <TableRow key={index}>

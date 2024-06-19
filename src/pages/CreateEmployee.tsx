@@ -3,7 +3,7 @@ import EmployeeProvider from '../components/EmployeeProvider';
 
 export default function CreateEmployee() {
   return (
-    <>
+    <section>
       <div className='header'>
         <img src='./logo.png' alt='' />
         <div className='header__content'>
@@ -15,6 +15,6 @@ export default function CreateEmployee() {
         </div>
       </div>
       <EmployeeProvider />
-    </>
+    </section>
   );
 }

@@ -12,7 +12,7 @@ export default function SearchBar({ filter, setFilter }: Props) {
   };
 
   return (
-    <div>
+    <div className='searchbar'>
       Search :{' '}
       <TextField size='small' value={filter} onChange={handleFilterChange} />
     </div>

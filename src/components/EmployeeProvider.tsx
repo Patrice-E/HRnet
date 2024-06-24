@@ -12,10 +12,7 @@ export default function EmployeeProvider() {
 
   return (
     <FormProvider {...methods}>
-      {/* <form onSubmit={methods.handleSubmit(onSubmit)}> */}
       <CreateEmployeeForm />
-      {/* <input type='submit' /> */}
-      {/* </form> */}
     </FormProvider>
   );
 }

@@ -7,9 +7,13 @@ import Fieldset from './Fieldset';
 import RHFAutocomplete from './RHFAutocomplete';
 import RHFDatePicker from './RHFDatePicker';
 import RHFTextField from './RHFTextField';
-import { Schema } from './schema';
+import { Schema, defaultValues } from './schema';
 import { useAppStore } from '../../store';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
+import { useState } from 'react';
+import { Modal } from '@epatrice/hrnetmodalcomponent';
+import '@epatrice/hrnetmodalcomponent/styles';
 
 export default function CreateEmployeeForm() {
   const navigate = useNavigate();
@@ -19,9 +23,37 @@ export default function CreateEmployeeForm() {
   } = useFormContext<Schema>();
   const { addUser } = useAppStore();
 
-  const onSubmit = (data: Schema) => {
-    addUser(data);
+  const [openModal, setOpenModal] = useState(false);
+  const [content, setContent] = useState('');
+  const [newUser, setNewUser] = useState<Schema>(defaultValues);
+
+  const onConfirm = () => {
+    addUser(newUser);
+    setOpenModal(false);
     navigate('/employees-list');
+  };
+  const onCancel = () => {
+    setOpenModal(false);
+  };
+
+  const formatDataForModal = (datas: Schema) => {
+    const formatedDatas = `First name : ${datas.firstName}
+Last name : ${datas.lastName}
+Date of Birth : ${format(datas.dateOfBirth, 'PPPP')}
+Start Date : ${format(datas.startDate, 'PPPP')}
+Street : ${datas.street}
+City : ${datas.city}
+State : ${datas.state}
+ZipCode : ${datas.zipCode}
+Department : ${datas.department}
+    `;
+    return formatedDatas;
+  };
+
+  const onSubmit = (data: Schema) => {
+    setNewUser(data);
+    setContent(formatDataForModal(data));
+    setOpenModal(true);
   };
 
   return (
@@ -46,6 +78,9 @@ export default function CreateEmployeeForm() {
           {isSubmitting ? 'Saving...' : 'Save'}
         </LoadingButton>
       </Stack>
+      <Modal isOpen={openModal} onConfirm={onConfirm} onCancel={onCancel}>
+        <pre>{content}</pre>
+      </Modal>
     </Container>
   );
 }
